@@ -10,16 +10,29 @@
             padding: 0;
             font-family: Arial, sans-serif;
             direction: rtl;
-            color: black;
             text-align: center;
-            background-color: white; /* خلفية بيضاء */
+            background: linear-gradient(45deg, red, black, blue);
+            background-size: 400% 400%;
+            animation: gradient 5s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         header {
-            background-color: #f0f0f0; /* لون فاتح لشريط العنوان */
-            color: black;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: rgb(255, 0, 0);
             padding: 20px;
-            border-bottom: 2px solid #ddd;
+            border-bottom: 2px solid rgb(255, 0, 0);
         }
 
         header h1 {
@@ -29,16 +42,16 @@
 
         .content {
             padding: 40px 20px;
-            color: black; /* نص أسود ليتناسب مع الخلفية البيضاء */
+            color: rgb(0, 0, 255);
             border-radius: 10px;
             margin: 20px auto;
             max-width: 1000px;
-            background-color: #f9f9f9; /* لون خفيف للنصوص */
+            background-color: rgba(0, 0, 0, 0.7);
         }
 
         .content h2 {
             font-size: 2em;
-            color: #333;
+            color: rgb(0, 255, 0);
         }
 
         .content p {
@@ -55,12 +68,12 @@
             display: inline-block;
             margin: 20px;
             text-align: center;
-            background-color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
-            border: 1px solid #ddd;
+            border: 1px solid rgb(0, 0, 255);
         }
 
         .game:hover {
@@ -68,17 +81,117 @@
         }
 
         .game img {
-            width: 150px; /* حجم مصغر للصورة */
+            width: 150px;
             height: 150px;
             object-fit: cover;
             border-radius: 10px;
         }
 
         footer {
-            background-color: #f0f0f0; /* لون فاتح للتذييل */
-            color: black;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: rgb(255, 0, 0);
             padding: 20px;
-            border-top: 2px solid #ddd;
+            border-top: 2px solid rgb(255, 0, 0);
+        }
+
+        /* إعدادات دعم البوت */
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 70px;
+            height: 70px;
+            background-color: rgb(255, 0, 0);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .chatbot-container:hover {
+            background-color: rgb(0, 0, 255);
+            transform: scale(1.1);
+        }
+
+        .chatbox {
+            display: none;
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 350px;
+            height: 450px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 1.1em;
+            overflow-y: auto;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .chatbox-header {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            color: rgb(255, 0, 0);
+        }
+
+        .chatbox-body {
+            max-height: 330px;
+            overflow-y: scroll;
+            padding-right: 10px;
+        }
+
+        .chatbox-footer {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .chatbox-footer input {
+            width: 80%;
+            padding: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+        }
+
+        .chatbox-footer button {
+            padding: 10px;
+            background-color: rgb(0, 0, 255);
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        /* المحادثات مع المستخدم */
+        .user-message, .bot-message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .user-message {
+            background-color: rgb(0, 0, 255);
+            align-self: flex-end;
+            color: white;
+        }
+
+        .bot-message {
+            background-color: rgb(255, 0, 0);
+            align-self: flex-start;
+            color: white;
         }
     </style>
 </head>
@@ -121,5 +234,51 @@
         <p>© 2025 Supergiant Games Studio EG. جميع الحقوق محفوظة.</p>
     </footer>
 
+    <!-- Chatbot Icon -->
+    <div class="chatbot-container" onclick="toggleChatbox()">
+        <span>🤖</span>
+    </div>
+
+    <!-- Chatbox -->
+    <div class="chatbox" id="chatbox">
+        <div class="chatbox-header">
+            <p>دعم بوت</p>
+        </div>
+        <div class="chatbox-body" id="chatboxBody">
+            <p class="bot-message">مرحبًا! كيف يمكنني مساعدتك اليوم؟</p>
+        </div>
+        <div class="chatbox-footer">
+            <input type="text" id="userMessage" placeholder="اكتب رسالتك...">
+            <button onclick="sendMessage()">إرسال</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleChatbox() {
+            const chatbox = document.getElementById('chatbox');
+            chatbox.style.display = (chatbox.style.display === 'none' || chatbox.style.display === '') ? 'block' : 'none';
+        }
+
+        function sendMessage() {
+            const userMessage = document.getElementById('userMessage').value;
+            const chatboxBody = document.getElementById('chatboxBody');
+
+            // إضافة رسالة المستخدم
+            const userMessageElement = document.createElement('p');
+            userMessageElement.classList.add('user-message');
+            userMessageElement.textContent = userMessage;
+            chatboxBody.appendChild(userMessageElement);
+
+            // إضافة رسالة البوت
+            const botMessageElement = document.createElement('p');
+            botMessageElement.classList.add('bot-message');
+            botMessageElement.textContent = "شكرًا على رسالتك! نحن هنا للمساعدة.";
+            chatboxBody.appendChild(botMessageElement);
+
+            // مسح حقل الإدخال بعد الإرسال
+            document.getElementById('userMessage').value = '';
+            chatboxBody.scrollTop = chatboxBody.scrollHeight;  // لتمرير المحادثة إلى الأسفل
+        }
+    </script>
 </body>
-</html>
+</
